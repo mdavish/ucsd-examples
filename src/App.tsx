@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { FilterSearch } from "@yext/search-ui-react";
 import {
   useSearchActions,
@@ -8,7 +9,42 @@ import {
 } from "@yext/search-headless-react"
 import "@yext/search-ui-react/bundle.css"
 
+// In reality, you'd have this variable available some other way.
+const INITIAL_VALUE = "Orthopedics";
+
 function App() {
+
+  useEffect(() => {
+    const complexFilter: SelectableStaticFilter = {
+      displayName: "Specialty",
+      selected: true,
+      filter: {
+        kind: "disjunction",
+        combinator: FilterCombinator.OR,
+        filters: [
+          {
+            kind: "fieldValue",
+            fieldId: "c_relatedSpecialty.name",
+            matcher: Matcher.Equals,
+            value: INITIAL_VALUE,
+          },
+          {
+            kind: "fieldValue",
+            fieldId: "c_relatedSubspecialty.name",
+            matcher: Matcher.Equals,
+            value: INITIAL_VALUE,
+          },
+          {
+            kind: "fieldValue",
+            fieldId: "c_relatedConditionsTreated.name",
+            matcher: Matcher.Equals,
+            value: INITIAL_VALUE,
+          },
+        ]
+      }
+    }
+    searchActions.setStaticFilters([complexFilter]);
+  }, [INITIAL_VALUE])
 
   const searchActions = useSearchActions();
 
@@ -20,6 +56,10 @@ function App() {
         const locationFilter = filters.find(f => {
           return (f.filter.kind === "fieldValue" && f.filter.fieldId === "builtin.location")
         });
+
+        const nonLocationFilters = filters.filter(f => (
+          f !== locationFilter
+        ))
 
         if (locationFilter) {
           const locationFilterFilter = locationFilter.filter;
@@ -51,6 +91,7 @@ function App() {
 
             searchActions.setStaticFilters([
               compoundLocationFilter,
+              ...nonLocationFilters,
             ])
 
           } else {
