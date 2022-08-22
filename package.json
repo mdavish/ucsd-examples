@@ -11,7 +11,7 @@
   "dependencies": {
     "@yext/analytics": "^0.2.0",
     "@yext/search-headless-react": "^2.0.0-alpha.152",
-    "@yext/search-ui-react": "^1.0.0-beta.269",
+    "@yext/search-ui-react": "^1.0.0-beta.298",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

@@ -1,4 +1,4 @@
-import { FilterSearch } from "@yext/search-ui-react"
+import { FilterSearch } from "@yext/search-ui-react";
 import {
   useSearchActions,
   Matcher,
@@ -16,10 +16,6 @@ function App() {
     valueAccessor: (s => s.filters.static),
     callback: (filters) => {
       if (filters) {
-
-        console.log({
-          filters
-        })
 
         const locationFilter = filters.find(f => {
           return (f.filter.kind === "fieldValue" && f.filter.fieldId === "builtin.location")
